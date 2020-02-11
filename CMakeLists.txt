@@ -3,6 +3,20 @@ project (Sentry-Native LANGUAGES C CXX ASM)
 
 OPTION(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" ON)
 
+OPTION(WITH_CRASHPAD "Build and use the Crashpad integration" ON)
+
+if(WITH_CRASHPAD)
+	include(ExternalProject)
+
+	ExternalProject_Add("crashpad"
+		SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/crashpad"
+		INSTALL_DIR "${CMAKE_BINARY_DIR}/crashpad"
+		CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>"
+		EXCLUDE_FROM_ALL TRUE
+	)
+	link_directories("${CMAKE_BINARY_DIR}/crashpad/lib")
+endif()
+
 OPTION(WITH_ASAN_OPTION "Build sentry-native with address sanitizer" OFF)
 if(WITH_ASAN_OPTION)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fsanitize=address -fno-omit-frame-pointer")
@@ -123,6 +137,11 @@ add_library("sentry" ${SENTRY_NATIVE_ALL_SOURCES})
 set_target_properties("sentry" PROPERTIES PUBLIC_HEADER "include/sentry.h")
 target_link_libraries("sentry" ${LINK_LIBRARIES})
 install(TARGETS "sentry")
+
+if(WITH_CRASHPAD)
+	add_dependencies("sentry" "crashpad")
+	target_link_libraries("sentry" "crashpad_util" "crashpad_client")
+endif()
 
 # ===== tests =====
 

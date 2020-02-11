@@ -1,3 +1,12 @@
 [submodule "external/libunwindstack-ndk"]
 	path = external/libunwindstack-ndk
 	url = https://github.com/getsentry/libunwindstack-ndk
+[submodule "crashpad/zlib"]
+	path = crashpad/zlib
+	url = https://github.com/madler/zlib.git
+[submodule "crashpad/crashpad"]
+	path = crashpad/crashpad
+	url = https://github.com/getsentry/crashpad
+[submodule "crashpad/mini_chromium"]
+	path = crashpad/mini_chromium
+	url = https://chromium.googlesource.com/chromium/mini_chromium

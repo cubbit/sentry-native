@@ -9,11 +9,11 @@ build/Makefile: CMakeLists.txt
 	@cd build; cmake ..
 
 build: build/Makefile
-	@$(MAKE) -C build
+	@cmake --build build --parallel
 .PHONY: build
 
 build/sentry_tests: build
-	@$(MAKE) -C build sentry_tests
+	@cmake --build build --parallel --target sentry_tests
 
 test: update-test-discovery build/sentry_tests
 	@./build/sentry_tests
