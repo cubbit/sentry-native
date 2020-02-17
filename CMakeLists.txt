@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.0)
-project (Sentry-Native LANGUAGES C CXX ASM)
+project(sentry LANGUAGES C CXX ASM)
 
 include(GNUInstallDirs)
 
