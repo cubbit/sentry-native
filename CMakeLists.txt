@@ -27,6 +27,5 @@ install(TARGETS sentry
 )
 
 set(HEADERS include/sentry.h)
-install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
+install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/sentry)
 install(EXPORT ${PROJECT_NAME}-config DESTINATION cmake)
