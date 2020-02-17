@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.0)
 project (Sentry-Native LANGUAGES C CXX ASM)
 
+include(GNUInstallDirs)
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=implicit-function-declaration -Werror=incompatible-function-pointer-types")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
@@ -14,7 +16,17 @@ file(GLOB_RECURSE SENTRY_NATIVE_SOURCES
 )
 
 add_definitions(-DSENTRY_WITH_INPROC_BACKEND)
-add_library("sentry" SHARED
-    ${SENTRY_NATIVE_SOURCES}
+add_library(sentry SHARED ${SENTRY_NATIVE_SOURCES})
+
+include_directories(sentry PUBLIC include)
+
+install(TARGETS sentry
+    EXPORT ${PROJECT_NAME}-config
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
-target_link_libraries("sentry" ${LINK_LIBRARIES})
+
+set(HEADERS include/sentry.h)
+install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+install(EXPORT ${PROJECT_NAME}-config DESTINATION cmake)
